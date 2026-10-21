@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# 依赖（无，但留位）
+node_modules/
+
+# Safari 转换产物（由 SAFARI.md 的流程生成，不入库）
+safari-build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# 日志与临时文件
+*.log
+*.tmp

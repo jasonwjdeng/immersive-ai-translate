@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Immersive AI Translate — Test Page</title>
+<style>
+  body {
+    max-width: 720px; margin: 60px auto; padding: 0 24px 120px;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.75; color: #1f2937; background: #fff;
+  }
+  h1 { font-size: 30px; line-height: 1.3; margin-bottom: 8px; }
+  h2 { font-size: 21px; margin-top: 36px; }
+  .byline { color: #6b7280; font-size: 14px; font-family: system-ui, sans-serif; margin-bottom: 32px; }
+  p { margin: 0 0 18px; }
+  blockquote {
+    margin: 24px 0; padding: 12px 20px; border-left: 3px solid #d1d5db;
+    color: #4b5563; font-style: italic;
+  }
+  code { background: #f3f4f6; padding: 2px 5px; border-radius: 4px; font-size: 90%; }
+  pre { background: #f9fafb; border: 1px solid #e5e7eb; padding: 14px; border-radius: 8px;
+        overflow: auto; font-size: 13px; line-height: 1.55; }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px 20px; margin: 24px 0; }
+  .tags span { display: inline-block; font-family: system-ui, sans-serif; font-size: 12px;
+               background: #eef2ff; color: #4338ca; padding: 3px 10px; border-radius: 999px; margin-right: 6px; }
+  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid #e5e7eb;
+           font-size: 13px; color: #9ca3af; font-family: system-ui, sans-serif; }
+</style>
+</head>
+<body>
+
+<h1>The Quiet Economics of Attention</h1>
+<div class="byline">A test article for Immersive AI Translate · 6 min read</div>
+
+<p>
+  Every morning, before the coffee has finished brewing, most of us hand over a small fortune
+  without noticing. Not money — attention. The currency is invisible, but the exchange rate is
+  brutal, and the market never closes.
+</p>
+
+<p>
+  Economists have a word for goods that are consumed collectively: public goods. Attention is
+  the opposite. It is a private good that behaves like a commons, which is why it gets
+  over-grazed. Nobody owns the meadow, so everybody brings a cow.
+</p>
+
+<h2>Why translation matters more than you think</h2>
+
+<p>
+  A language is not a lookup table. It is a compression scheme for a culture, and every
+  sentence arrives carrying assumptions that were never written down. When you translate
+  <em>literally</em>, you keep the words and lose the assumptions.
+</p>
+
+<blockquote>
+  "To read in a second language is to walk the same road with different shoes on.
+  You arrive at the same place, but you feel every stone."
+</blockquote>
+
+<p>
+  This is exactly why machine translation has moved from phrase-based statistical models to
+  large language models. The older systems optimised for lexical overlap; the newer ones
+  optimise for <strong>intent</strong>. That shift is the difference between a dictionary and
+  a translator.
+</p>
+
+<div class="card">
+  <p style="margin:0">
+    This card is a nested container — the extension should translate the paragraph inside it
+    without breaking the border or padding.
+  </p>
+</div>
+
+<h2>A short technical detour</h2>
+
+<p>Here is a code block that should be left untouched by any sane translator:</p>
+
+<pre><code>async function translate(texts) {
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    body: JSON.stringify({ segments: texts })
+  });
+  return res.json();
+}</code></pre>
+
+<p>
+  Inline code like <code>requestAnimationFrame</code> should also survive intact, as should
+  numbers such as 3.14159, dates like 2026-10-20, and URLs like
+  <a href="https://example.com">https://example.com/docs</a>.
+</p>
+
+<h2>Three things to test</h2>
+<ul>
+  <li>Click the floating button in the bottom-right corner and watch the translations stream in.</li>
+  <li>Scroll down — unseen paragraphs are only translated when they approach the viewport.</li>
+  <li>Switch between "bilingual" and "translation only" in the popup to compare layouts.</li>
+</ul>
+
+<div class="tags">
+  <span>reading</span><span>attention</span><span>language</span><span>economics</span>
+</div>
+
+<footer>
+  Test fixture · Immersive AI Translate v1.0.0 — 这段中文应该被识别为「已是目标语言」而跳过翻译。
+</footer>
+
+</body>
+</html>

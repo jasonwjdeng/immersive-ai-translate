@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>沉浸式 AI 翻译 · 设置</title>
+<style>
+  :root {
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --line: #e7e9f0;
+    --text: #0f172a;
+    --muted: #64748b;
+    --brand: #6366f1;
+    --brand-dark: #4f46e5;
+    --ok: #10b981;
+    --err: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 34px 20px 80px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; }
+
+  header.page { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .logo {
+    width: 42px; height: 42px; border-radius: 12px; flex: none;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff; font-weight: 700; font-size: 19px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 16px rgba(99,102,241,.3);
+  }
+  h1 { font-size: 19px; margin: 0 0 3px; font-weight: 650; letter-spacing: .2px; }
+  .sub { font-size: 12.5px; color: var(--muted); }
+
+  section.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 2px rgba(15,23,42,.03);
+  }
+  section.card h2 {
+    font-size: 14.5px; margin: 0 0 4px; font-weight: 650;
+    display: flex; align-items: center; gap: 8px;
+  }
+  section.card h2 .num {
+    width: 20px; height: 20px; border-radius: 6px; background: #eef2ff; color: #4f46e5;
+    font-size: 11.5px; font-weight: 700; display: inline-flex;
+    align-items: center; justify-content: center;
+  }
+  .hint { font-size: 12px; color: var(--muted); margin: 0 0 16px; line-height: 1.65; }
+
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  label.lbl { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; color: #334155; }
+  label.lbl .opt { font-weight: 400; color: #94a3b8; font-size: 11.5px; margin-left: 4px; }
+  input[type=text], input[type=password], input[type=number], select, textarea {
+    width: 100%; padding: 9px 11px; border: 1px solid #dfe3ec; border-radius: 9px;
+    font-size: 13.5px; font-family: inherit; color: var(--text); background: #fcfdff;
+    transition: border-color .14s ease, box-shadow .14s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--brand); background: #fff;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.13);
+  }
+  textarea { resize: vertical; min-height: 84px; line-height: 1.65; }
+  .row { display: flex; gap: 12px; }
+  .row > .field { flex: 1; }
+  .small { font-size: 11.5px; color: #94a3b8; margin-top: 5px; line-height: 1.55; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+  .chip {
+    border: 1px solid #e2e6f0; background: #fff; border-radius: 999px;
+    padding: 5px 12px; font-size: 12px; font-weight: 550; color: #475569; cursor: pointer;
+    transition: all .13s ease;
+  }
+  .chip:hover { border-color: #c7cdfa; color: var(--brand-dark); background: #f8f9ff; }
+
+  .check { display: flex; align-items: flex-start; gap: 9px; cursor: pointer; padding: 4px 0; }
+  .check input { width: 15px; height: 15px; margin: 2px 0 0; accent-color: var(--brand); cursor: pointer; }
+  .check .txt { font-size: 13px; line-height: 1.5; }
+  .check .txt small { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+
+  .pw-wrap { position: relative; }
+  .pw-wrap input { padding-right: 62px; }
+  .pw-toggle {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    border: none; background: transparent; color: var(--brand-dark);
+    font-size: 12px; font-weight: 600; cursor: pointer; padding: 5px 7px; border-radius: 6px;
+  }
+  .pw-toggle:hover { background: #eef2ff; }
+
+  .bar {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-top: 1px solid var(--line);
+    padding: 12px 20px;
+    display: flex; align-items: center; gap: 10px; justify-content: flex-end;
+    z-index: 10;
+  }
+  .bar .msg { margin-right: auto; font-size: 12.5px; color: var(--muted); }
+  .bar .msg.ok { color: var(--ok); font-weight: 550; }
+  .bar .msg.err { color: var(--err); font-weight: 550; }
+
+  button.btn {
+    border: 1px solid #dfe3ec; background: #fff; color: #334155;
+    border-radius: 9px; padding: 9px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all .13s ease;
+  }
+  button.btn:hover { background: #f8fafc; border-color: #cbd5e1; }
+  button.btn.primary {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border: none;
+    box-shadow: 0 4px 12px rgba(99,102,241,.28);
+  }
+  button.btn.primary:hover { filter: brightness(1.05); }
+  button.btn:disabled { opacity: .55; cursor: not-allowed; }
+
+  .sites { display: flex; flex-direction: column; gap: 7px; }
+  .site-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+    border: 1px solid #eceef5; border-radius: 9px; font-size: 12.5px; background: #fcfdff;
+  }
+  .site-row .name { flex: 1; font-weight: 550; color: #334155; overflow: hidden; text-overflow: ellipsis; }
+  .site-row .tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; }
+  .tag.on { background: #ecfdf5; color: #047857; }
+  .tag.off { background: #fef2f2; color: #b91c1c; }
+  .site-row .del {
+    border: none; background: transparent; color: #94a3b8; cursor: pointer;
+    font-size: 12px; padding: 2px 4px; border-radius: 5px;
+  }
+  .site-row .del:hover { color: var(--err); background: #fef2f2; }
+  .empty { font-size: 12.5px; color: #94a3b8; padding: 6px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div class="logo">译</div>
+    <div>
+      <h1>沉浸式 AI 翻译 · 设置</h1>
+      <div class="sub">网页实时双语翻译，使用你自己的大模型接口</div>
+    </div>
+  </header>
+
+  <!-- 1. 接口 -->
+  <section class="card">
+    <h2><span class="num">1</span>大模型接口</h2>
+    <p class="hint">选一个常用服务商会自动填好地址与模型，也可以填任意 OpenAI 兼容接口（如自建网关、vLLM、LM Studio）。</p>
+
+    <div class="chips" id="presets">
+      <button class="chip" data-preset="openai">OpenAI</button>
+      <button class="chip" data-preset="deepseek">DeepSeek</button>
+      <button class="chip" data-preset="qwen">阿里通义</button>
+      <button class="chip" data-preset="moonshot">月之暗面 Kimi</button>
+      <button class="chip" data-preset="zhipu">智谱 GLM</button>
+      <button class="chip" data-preset="ollama">Ollama（本地）</button>
+      <button class="chip" data-preset="anthropic">Anthropic</button>
+      <button class="chip" data-preset="gemini">Google Gemini</button>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label class="lbl">接口协议</label>
+        <select id="provider">
+          <option value="openai">OpenAI 兼容（/chat/completions）</option>
+          <option value="anthropic">Anthropic（/v1/messages）</option>
+          <option value="gemini">Google Gemini（generateContent）</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="lbl">模型名称</label>
+        <input type="text" id="model" placeholder="例如 gpt-4o-mini / deepseek-chat" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">API 地址 <span class="opt">Base URL，不要带 /chat/completions</span></label>
+      <input type="text" id="apiBase" placeholder="https://api.openai.com/v1" />
+    </div>
+
+    <div class="field">
+      <label class="lbl">API Key</label>
+      <div class="pw-wrap">
+        <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off" />
+        <button class="pw-toggle" id="pwToggle" type="button">显示</button>
+      </div>
+      <div class="small">Key 只保存在本机浏览器存储里（chrome.storage.local），不会上传到任何第三方。</div>
+    </div>
+  </section>
+
+  <!-- 2. 翻译设置 -->
+  <section class="card">
+    <h2><span class="num">2</span>翻译设置</h2>
+    <div class="row">
+      <div class="field">
+        <label class="lbl">目标语言</label>
+        <input type="text" id="targetLang" list="langList" placeholder="简体中文" />
+        <datalist id="langList">
+          <option value="简体中文"></option>
+          <option value="繁體中文"></option>
+          <option value="English"></option>
+          <option value="日本語"></option>
+          <option value="한국어"></option>
+        </datalist>
+      </div>
+      <div class="field">
+        <label class="lbl">默认显示方式</label>
+        <select id="displayMode">
+          <option value="bilingual">中英对照（原文 + 译文）</option>
+          <option value="replace">仅译文（隐藏原文）</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label class="lbl">并发请求数 <span class="opt">1–5</span></label>
+        <input type="number" id="concurrency" min="1" max="5" step="1" />
+        <div class="small">越高越快，但更容易触发限流。</div>
+      </div>
+      <div class="field">
+        <label class="lbl">每批最大字符 <span class="opt">200–8000</span></label>
+        <input type="number" id="maxCharsPerBatch" min="200" max="8000" step="100" />
+        <div class="small">小模型建议 800–1200。</div>
+      </div>
+      <div class="field">
+        <label class="lbl">每批最大段落</label>
+        <input type="number" id="maxSegmentsPerBatch" min="1" max="60" step="1" />
+      </div>
+    </div>
+
+    <label class="check" style="margin-bottom:10px">
+      <input type="checkbox" id="autoTranslate" />
+      <span class="txt">自动翻译所有网站
+        <small>关闭时：每个网站需手动点一次（会记住该网站的选择）。</small>
+      </span>
+    </label>
+
+    <label class="check" style="margin-bottom:16px">
+      <input type="checkbox" id="showFloatingButton" />
+      <span class="txt">显示页面右下角悬浮按钮
+        <small>也可以不显示，用 Alt+T 或扩展图标开关。</small>
+      </span>
+    </label>
+
+    <div class="field">
+      <label class="lbl">不翻译的元素 <span class="opt">CSS 选择器，逗号分隔</span></label>
+      <input type="text" id="skipSelectors" placeholder=".nav, .footer, #comments, [data-no-translate]" />
+    </div>
+  </section>
+
+  <!-- 3. 提示词 -->
+  <section class="card">
+    <h2><span class="num">3</span>高级：提示词与请求头</h2>
+    <p class="hint">留空则使用内置提示词。批量翻译时程序会自动追加「[[序号]]」格式要求，无需你手写。</p>
+    <div class="field">
+      <label class="lbl">系统提示词 <span class="opt">选填</span></label>
+      <textarea id="systemPrompt" placeholder="你是一个专业的网页翻译引擎……（留空使用内置）"></textarea>
+    </div>
+    <div class="field">
+      <label class="lbl">附加请求头 <span class="opt">选填，JSON 格式</span></label>
+      <textarea id="customHeaders" style="min-height:64px" placeholder='{"X-Title": "immersive-translate"}'></textarea>
+      <div class="small">用于 OpenRouter、自建网关等需要额外 Header 的场景。</div>
+    </div>
+  </section>
+
+  <!-- 4. 站点 -->
+  <section class="card">
+    <h2><span class="num">4</span>站点记忆</h2>
+    <p class="hint">你在各个网站上手动开关过的记录（关闭的站点不会再自动翻译）。</p>
+    <div class="sites" id="sites"></div>
+    <div style="margin-top:12px">
+      <button class="btn" id="clearSites">清空全部站点记录</button>
+    </div>
+  </section>
+</div>
+
+<div class="bar">
+  <span class="msg" id="msg"></span>
+  <button class="btn" id="reset">恢复默认</button>
+  <button class="btn" id="test">测试连接</button>
+  <button class="btn primary" id="save">保存设置</button>
+</div>
+
+<script src="options.js"></script>
+</body>
+</html>

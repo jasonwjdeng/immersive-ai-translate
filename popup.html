@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>沉浸式 AI 翻译</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    width: 336px;
+    margin: 0;
+    padding: 14px 14px 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #ffffff;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+  }
+  .head { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+  .logo {
+    width: 30px; height: 30px; border-radius: 9px; flex: none;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff; font-size: 15px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 8px rgba(99,102,241,.28);
+  }
+  .title { font-size: 14px; font-weight: 650; letter-spacing: .2px; }
+  .host { font-size: 11.5px; color: #64748b; margin-top: 1px; max-width: 240px;
+          overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .card {
+    border: 1px solid #e6e8ef; border-radius: 12px; padding: 12px;
+    background: #fbfcfe; margin-bottom: 10px;
+  }
+  .btn-main {
+    width: 100%; border: none; border-radius: 10px; padding: 11px 14px;
+    font-size: 13.5px; font-weight: 600; cursor: pointer; color: #fff;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    box-shadow: 0 4px 12px rgba(99,102,241,.28);
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  }
+  .btn-main:hover { transform: translateY(-1px); filter: brightness(1.04); }
+  .btn-main:active { transform: translateY(0); }
+  .btn-main.on { background: linear-gradient(135deg, #ef4444, #f97316);
+                 box-shadow: 0 4px 12px rgba(239,68,68,.26); }
+  .btn-main:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  .label { font-size: 11px; font-weight: 600; color: #94a3b8; letter-spacing: .4px;
+           text-transform: uppercase; margin-bottom: 7px; }
+
+  .seg { display: flex; gap: 4px; background: #eef1f6; border-radius: 9px; padding: 3px; }
+  .seg button {
+    flex: 1; border: none; background: transparent; padding: 7px 6px; border-radius: 7px;
+    font-size: 12.5px; font-weight: 550; color: #64748b; cursor: pointer;
+    transition: background .12s ease, color .12s ease;
+  }
+  .seg button.active { background: #fff; color: #4f46e5; box-shadow: 0 1px 3px rgba(15,23,42,.1); }
+
+  .rows { display: flex; gap: 8px; }
+  .btn-ghost {
+    flex: 1; border: 1px solid #e2e8f0; background: #fff; border-radius: 9px;
+    padding: 8px 10px; font-size: 12.5px; font-weight: 550; color: #334155; cursor: pointer;
+    transition: background .12s ease, border-color .12s ease;
+  }
+  .btn-ghost:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+  .meta { display: flex; align-items: center; justify-content: space-between;
+          font-size: 11.5px; color: #64748b; padding: 2px 2px 0; }
+  .meta code { font-size: 11px; background: #f1f5f9; padding: 2px 6px; border-radius: 5px;
+               color: #475569; max-width: 170px; overflow: hidden; text-overflow: ellipsis;
+               white-space: nowrap; display: inline-block; vertical-align: middle; }
+  .link { color: #4f46e5; cursor: pointer; font-weight: 550; text-decoration: none; }
+  .link:hover { text-decoration: underline; }
+
+  .warn {
+    display: none; margin-bottom: 10px; padding: 9px 11px; border-radius: 9px;
+    background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; font-size: 12px;
+    line-height: 1.55;
+  }
+  .warn.show { display: block; }
+  .warn b { font-weight: 650; }
+  .warn a { color: #c2410c; font-weight: 600; cursor: pointer; text-decoration: underline; }
+
+  .status { font-size: 11.5px; color: #10b981; margin-top: 8px; text-align: center; min-height: 15px; }
+  .status.err { color: #ef4444; }
+  .kbd { font-size: 10.5px; color: #94a3b8; text-align: center; margin-top: 8px; }
+  .kbd b { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px; padding: 1px 5px;
+           font-weight: 600; color: #475569; font-family: inherit; }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="logo">译</div>
+    <div>
+      <div class="title">沉浸式 AI 翻译</div>
+      <div class="host" id="host">—</div>
+    </div>
+  </div>
+
+  <div class="warn" id="warn">
+    <b>还没配置大模型接口。</b>填好 API 地址、Key 和模型名后即可使用。
+    <a id="warnLink">立即设置 →</a>
+  </div>
+
+  <div class="card">
+    <button class="btn-main" id="toggle">翻译此页</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="card">
+    <div class="label">显示方式</div>
+    <div class="seg" id="seg">
+      <button data-mode="bilingual" class="active">中英对照</button>
+      <button data-mode="replace">仅译文</button>
+    </div>
+  </div>
+
+  <div class="rows" style="margin-bottom:10px">
+    <button class="btn-ghost" id="retranslate">重新翻译</button>
+    <button class="btn-ghost" id="options">设置</button>
+  </div>
+
+  <div class="meta">
+    <span>模型</span>
+    <code id="model">—</code>
+  </div>
+  <div class="kbd">快捷键 <b>Alt</b> + <b>T</b> 快速开关</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
